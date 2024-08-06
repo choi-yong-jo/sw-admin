@@ -13,8 +13,15 @@ const routes = [
     },
     {
         path: '/member/list',
-        name: 'MemberList',
-        component: () => import('../views/Page.vue')
+        component: () => import('../views/member/list.vue')
+    },
+    {
+        path: '/member/detail',
+        component: () => import('../views/member/detail.vue')
+    },
+    {
+        path: '/member/write',
+        component: () => import('../views/member/write.vue')
     }
 ]
 

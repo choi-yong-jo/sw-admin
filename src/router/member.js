@@ -4,18 +4,11 @@ import Member from '@/views/member/list.vue'
 const routes = [
     {
         path: '/member/list',
-        name: 'List',
         component: Member
     },
     {
-        path: '/member/detail',
-        name: 'Detail',
-        component: () => import('../views/member/detail.vue')
-    },
-    {
-        path: '/member/create-modify',
-        name: 'Create',
-        component: () => import('../views/member/create-modify.vue')
+        path: '/member/write',
+        component: () => import('../views/member/write.vue')
     }
 ]
 

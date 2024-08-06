@@ -4,18 +4,18 @@ import Team from '@/views/team/list.vue'
 const routes = [
     {
         path: '/team/list',
-        name: 'List',
+        name: 'TeamList',
         component: Team
     },
     {
         path: '/team/detail',
-        name: 'Detail',
+        name: 'TeamDetail',
         component: () => import('../views/team/detail.vue')
     },
     {
-        path: '/team/create-modify',
-        name: 'Create',
-        component: () => import('../views/team/create-modify.vue')
+        path: '/team/write',
+        name: 'TeamWrite',
+        component: () => import('../views/team/write.vue')
     }
 ]
 
