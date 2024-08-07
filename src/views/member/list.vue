@@ -9,15 +9,15 @@ export default {
       paging: {
         block: 0,
         endPage: 0,
-        next_block: 0,
+        nextBlock: 0,
         page: 0,
         totalSize: 0,
-        prev_block: 0,
-        start_index: 0,
+        prevBlock: 0,
+        startIndex: 0,
         startPage: 0,
-        total_block_cnt: 0,
+        totalBlockCnt: 0,
         totalListCnt: 0,
-        total_page_cnt: 0,
+        totalPageCnt: 0,
       }, //페이징 데이터
       page: this.$route.query.page ? this.$route.query.page : 1,
       size: this.$route.query.size ? this.$route.query.size : 10,
@@ -30,9 +30,6 @@ export default {
         return pageNumber;
       }
     }
-  },
-  created: function () {
-    this.getList()
   },
   methods: {
     getList: function () {
@@ -61,6 +58,12 @@ export default {
         console.log(error)
       })
     },
+    fnPage(n) {
+      if (this.page !== n) {
+        this.page = n
+        this.getList()
+      }
+    },
     fnWrite: function () {
       this.$router.push({
         path: './write'
@@ -72,12 +75,6 @@ export default {
         path: './detail',
         query: this.requestBody
       })
-    },
-    fnPage(n) {
-      if (this.page !== n) {
-        this.page = n
-        this.getList()
-      }
     }
   },
   mounted() {
@@ -114,7 +111,7 @@ export default {
     <div v-if="paging.totalListCnt > 0" style="width:auto;">
       <span class="pg">
       <a href="javascript:;" @click="fnPage(1)" class="first w3-button w3-bar-item w3-border">&lt;&lt;</a>
-      <a href="javascript:;" v-if="paging.startPage > 10" @click="fnPage(`${paging.startPage-1}`)"
+      <a href="javascript:;" v-if="paging.page > paging.startPage" @click="fnPage(`${paging.page-1}`)"
          class="prev w3-button w3-bar-item w3-border">&lt;</a>
       <template v-for=" (n,index) in paginavigation()">
           <template v-if="paging.page==n">
@@ -124,9 +121,9 @@ export default {
               <a class="w3-button w3-bar-item w3-border" href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{ n }}</a>
           </template>
       </template>
-      <a href="javascript:;" v-if="paging.total_page_cnt > paging.endPage"
-         @click="fnPage(`${paging.endPage+1}`)" class="next w3-button w3-bar-item w3-border">&gt;</a>
-      <a href="javascript:;" @click="fnPage(`${paging.total_page_cnt}`)" class="last w3-button w3-bar-item w3-border">&gt;&gt;</a>
+      <a href="javascript:;" v-if="paging.totalPageCnt > paging.page"
+         @click="fnPage(`${paging.page+1}`)" class="next w3-button w3-bar-item w3-border">&gt;</a>
+      <a href="javascript:;" @click="fnPage(`${paging.totalPageCnt}`)" class="last w3-button w3-bar-item w3-border">&gt;&gt;</a>
       </span>
     </div>
   </div>
