@@ -17,6 +17,7 @@ export default {
     get() {
       this.axios.get("/member/list").then((response) => {
         if (response.data.resultCode == 'SUCCESS') {
+          console.log(response.data.res);
           this.connectData = response.data.res;
         }
       });

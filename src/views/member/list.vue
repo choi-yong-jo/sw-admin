@@ -4,19 +4,19 @@ export default {
   data: function () {
     return {
       requestBody: {}, //리스트 페이지 데이터전송
-      memberList: {}, //리스트 데이터
+      list: {}, //리스트 데이터
       no: '', //게시판 숫자처리
       paging: {
         block: 0,
-        end_page: 0,
+        endPage: 0,
         next_block: 0,
         page: 0,
-        page_size: 0,
+        totalSize: 0,
         prev_block: 0,
         start_index: 0,
-        start_page: 0,
+        startPage: 0,
         total_block_cnt: 0,
-        total_list_cnt: 0,
+        totalListCnt: 0,
         total_page_cnt: 0,
       }, //페이징 데이터
       page: this.$route.query.page ? this.$route.query.page : 1,
@@ -24,9 +24,9 @@ export default {
       keyword: this.$route.query.keyword,
       paginavigation: function () { //페이징 처리 for문 커스텀
         let pageNumber = [] //;
-        let start_page = this.paging.start_page;
-        let end_page = this.paging.end_page;
-        for (let i = start_page; i <= end_page; i++) pageNumber.push(i);
+        let startPage = this.paging.startPage;
+        let endPage = this.paging.endPage;
+        for (let i = startPage; i <= endPage; i++) pageNumber.push(i);
         return pageNumber;
       }
     }
@@ -41,17 +41,29 @@ export default {
         page: this.page,
         size: this.size
       }
-
-      // axios를 이용하여 API 호출 (component 안에서 axios를 this.$axios로 사용할 수 있습니다.)
-      this.axios.get("/member/list").then(response => {
-        this.memberList = response.data.res
+      // this.axios.get("/member/list").then(response => {
+      //   this.memberList = response.data.res
+      // }).catch(error => {
+      //   console.log(error)
+      // })
+      this.axios.get(this.$serverUrl + "/member/list2", {
+        params: this.requestBody,
+        headers: {}
+      }).then(response => {
+        if (response.data.resultCode === "OK") {
+          console.log(response.data.data);
+          console.log(response.data.pagination);
+          this.memberList = response.data.data
+          this.paging = response.data.pagination
+          this.no = this.paging.totalListCnt - ((this.paging.page - 1) * this.paging.totalSize)
+        }
       }).catch(error => {
         console.log(error)
       })
     },
     fnWrite: function () {
       this.$router.push({
-        path: './member/write'
+        path: './write'
       })
     },
     fnView: function (idx) {
@@ -90,31 +102,33 @@ export default {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(row, idx) in memberList" :key="idx">
-        <td>{{ row.member_id }}</td>
-        <td><a v-on:click="fnView(`${row.idx}`)">{{ row.member_nm }}</a></td>
-        <td>{{ row.team_nm }}</td>
+      <tr v-for="(row, memberSeq) in memberList" :key="memberSeq">
+        <td>{{ row.memberId }}</td>
+        <td><a v-on:click="fnView(`${row.memberSeq}`)">{{ row.name }}</a></td>
+        <td>{{ row.teamId }}</td>
         <td>{{ row.mobile }}</td>
       </tr>
       </tbody>
     </table>
-    <div class="pagination w3-bar w3-padding-16 w3-small" v-if="paging.total_list_cnt > 0">
+    <br>
+    <div v-if="paging.totalListCnt > 0" style="width:auto;">
       <span class="pg">
-      <a href="javascript:;" @click="fnPage(1)" class="first w3-button w3-border">&lt;&lt;</a>
-      <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"
-         class="prev w3-button w3-border">&lt;</a>
+      <a href="javascript:;" @click="fnPage(1)" class="first w3-button w3-bar-item w3-border">&lt;&lt;</a>
+      <a href="javascript:;" v-if="paging.startPage > 10" @click="fnPage(`${paging.startPage-1}`)"
+         class="prev w3-button w3-bar-item w3-border">&lt;</a>
       <template v-for=" (n,index) in paginavigation()">
           <template v-if="paging.page==n">
-              <strong class="w3-button w3-border w3-green" :key="index">{{ n }}</strong>
+              <strong class="w3-button w3-bar-item w3-border w3-green" :key="index">{{ n }}</strong>
           </template>
           <template v-else>
-              <a class="w3-button w3-border" href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{ n }}</a>
+              <a class="w3-button w3-bar-item w3-border" href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{ n }}</a>
           </template>
       </template>
-      <a href="javascript:;" v-if="paging.total_page_cnt > paging.end_page"
-         @click="fnPage(`${paging.end_page+1}`)" class="next w3-button w3-border">&gt;</a>
-      <a href="javascript:;" @click="fnPage(`${paging.total_page_cnt}`)" class="last w3-button w3-border">&gt;&gt;</a>
+      <a href="javascript:;" v-if="paging.total_page_cnt > paging.endPage"
+         @click="fnPage(`${paging.endPage+1}`)" class="next w3-button w3-bar-item w3-border">&gt;</a>
+      <a href="javascript:;" @click="fnPage(`${paging.total_page_cnt}`)" class="last w3-button w3-bar-item w3-border">&gt;&gt;</a>
       </span>
     </div>
   </div>
 </template>
+
