@@ -1,21 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Team from '@/views/team/list.vue'
 
 const routes = [
     {
         path: '/team/list',
         name: 'TeamList',
-        component: Team
+        component: () => import('../views/team/teamList.vue')
     },
     {
         path: '/team/detail',
         name: 'TeamDetail',
-        component: () => import('../views/team/detail.vue')
+        component: () => import('../views/team/teamDetail.vue')
     },
     {
         path: '/team/write',
         name: 'TeamWrite',
-        component: () => import('../views/team/write.vue')
+        component: () => import('../views/team/teamWrite.vue')
     }
 ]
 

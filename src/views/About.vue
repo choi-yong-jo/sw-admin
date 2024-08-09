@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     get() {
-      this.axios.get("/member/list").then((response) => {
+      this.axios.get(this.$serverUrl + "/member/list").then((response) => {
         if (response.data.resultCode == 'SUCCESS') {
           console.log(response.data.res);
           this.connectData = response.data.res;

@@ -12,7 +12,7 @@ export default {
   methods: {
     getList: function () {
       // axios를 이용하여 API 호출 (component 안에서 axios를 this.$axios로 사용할 수 있습니다.)
-      this.axios.get("/api/member/list").then(response => {
+      this.axios.get(this.$serverUrl + "/api/member/list").then(response => {
         console.log('### response: ' + JSON.stringify(response))
         this.memberList = response.data.res
       }).catch(error => {

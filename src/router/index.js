@@ -3,25 +3,45 @@ import PageHome from '@/views/Home.vue'
 
 const routes = [
     {
-        path: '/',
-        name: 'Home',
-        component: PageHome
+        path: '/board/list',
+        component: () => import('../views/board/boardList.vue')
     },
     {
-        path: '/about',
-        component: () => import('../views/About.vue')
+        path: '/board/detail',
+        component: () => import('../views/board/boardDetail.vue')
+    },
+    {
+        path: '/board/write',
+        component: () => import('../views/board/boardWrite.vue')
     },
     {
         path: '/member/list',
-        component: () => import('../views/member/list.vue')
+        component: () => import('../views/member/memberList.vue')
     },
     {
         path: '/member/detail',
-        component: () => import('../views/member/detail.vue')
+        component: () => import('../views/member/memberDetail.vue')
     },
     {
         path: '/member/write',
-        component: () => import('../views/member/write.vue')
+        component: () => import('../views/member/memberWrite.vue')
+    },
+    {
+        path: '/team/list',
+        component: () => import('../views/team/teamList.vue')
+    },
+    // {
+    //     path: '/team/detail',
+    //     component: () => import('../views/team/teamDetail.vue')
+    // },
+    // {
+    //     path: '/team/write',
+    //     component: () => import('../views/team/teamWrite.vue')
+    // },
+    {
+        path: '/',
+        name: 'Home',
+        component: PageHome
     }
 ]
 
