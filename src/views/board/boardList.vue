@@ -20,7 +20,8 @@ export default {
       }, //페이징 데이터
       page: this.$route.query.page ? this.$route.query.page : 1,
       size: this.$route.query.size ? this.$route.query.size : 10,
-      keyword: this.$route.query.keyword,
+      search_key: this.$route.query.key ? this.$route.query.key : 'memberId',
+      search_value: this.$route.query.value ? this.$route.query.value : 'cyjo1207',
       paginavigation: function () { //페이징 처리 for문 커스텀
         let pageNumber = [] //;
         let start_page = this.paging.start_page;
@@ -36,17 +37,19 @@ export default {
   methods: {
     getList() {
       this.requestBody = { // 데이터 전송
-        keyword: this.keyword,
+        key: this.search_key,
+        value: this.search_value,
         page: this.page,
         size: this.size
       }
 
-      this.axios.get(this.$serverUrl + "/board/list", {
+      this.axios.get(this.$serverUrl + "/board/list2", {
         params: this.requestBody,
         headers: {}
       }).then((response) => {
-        console.log(response.data)
-        this.list = response.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
+        this.list = response.data.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
+        this.paging = response.data.pagination
+        this.no = this.paging.totalListCnt - ((this.paging.page - 1) * this.paging.totalSize)
       }).catch((err) => {
         if (err.message.indexOf('Network Error') > -1) {
           alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
@@ -54,7 +57,9 @@ export default {
       })
     },
     fnPage(n) {
-      if (this.page !== n) {
+      console.log(this.page);
+      console.log(n);
+      if (this.page !== n || this.search_key !== '') {
         this.page = n
         this.getList()
       }
@@ -65,7 +70,6 @@ export default {
       })
     },
     fnView: function (idx) {
-      console.log(idx);
       this.requestBody.idx = idx
       this.$router.push({
         path: './detail',
@@ -116,6 +120,19 @@ export default {
          @click="fnPage(`${paging.end_page+1}`)" class="next w3-button w3-bar-item w3-border">&gt;</a>
       <a href="javascript:;" @click="fnPage(`${paging.total_page_cnt}`)" class="last w3-button w3-bar-item w3-border">&gt;&gt;</a>
       </span>
+    </div>
+
+    <div>
+      <select v-model="search_key">
+        <option value="">- 선택 -</option>
+        <option value="memberId" selected>작성자</option>
+        <option value="title">제목</option>
+        <option value="contents">내용</option>
+      </select>
+      &nbsp;
+      <input type="text" v-model="search_value" @keyup.enter="fnPage()">
+      &nbsp;
+      <button @click="fnPage()">검색</button>
     </div>
   </div>
 </template>

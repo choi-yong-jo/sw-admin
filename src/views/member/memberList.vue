@@ -21,7 +21,8 @@ export default {
       }, //페이징 데이터
       page: this.$route.query.page ? this.$route.query.page : 1,
       size: this.$route.query.size ? this.$route.query.size : 10,
-      keyword: this.$route.query.keyword,
+      search_key: this.$route.query.key ? this.$route.query.key : '',
+      search_value: this.$route.query.value ? this.$route.query.value : '',
       paginavigation: function () { //페이징 처리 for문 커스텀
         let pageNumber = [] //;
         let startPage = this.paging.startPage;
@@ -37,7 +38,8 @@ export default {
   methods: {
     getList: function () {
       this.requestBody = { // 데이터 전송
-        keyword: this.keyword,
+        key: this.search_key,
+        value: this.search_value,
         page: this.page,
         size: this.size
       }
@@ -62,7 +64,8 @@ export default {
       })
     },
     fnPage(n) {
-      if (this.page !== n) {
+    console.log(this.search_key);
+      if (this.page !== n || this.search_key !== '') {
         this.page = n
         this.getList()
       }
