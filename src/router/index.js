@@ -3,6 +3,10 @@ import PageHome from '@/views/Home.vue'
 
 const routes = [
     {
+        path: '/login',
+        component: () => import('../views/common/Login.vue')
+    },
+    {
         path: '/board/list',
         component: () => import('../views/board/boardList.vue')
     },

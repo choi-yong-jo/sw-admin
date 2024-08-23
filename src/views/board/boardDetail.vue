@@ -16,16 +16,9 @@ export default {
   },
   methods: {
     fnGetView() {
-      this.requestBody = { // 데이터 전송
-        keyword: this.keyword,
-        page: this.page,
-        size: this.size
-      }
-
       this.axios.get(this.$serverUrl + "/board/detail/" + this.idx, {
         params: this.requestBody
       }).then((response) => {
-        console.log(response.data);
         this.title = response.data.title
         this.memberId = response.data.memberId
         this.boardType = response.data.boardType

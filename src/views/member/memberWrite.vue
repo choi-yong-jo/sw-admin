@@ -23,7 +23,6 @@ export default {
       this.axios.get(this.$serverUrl + '/member/detail/' + this.idx, {
         params: this.requestBody
       }).then((response) => {
-        console.log(response.data.res[0].teamId)
         this.member_id = response.data.res[0].memberId
         this.member_nm = response.data.res[0].name.trim()
         this.team_id = response.data.res[0].teamId.trim()
